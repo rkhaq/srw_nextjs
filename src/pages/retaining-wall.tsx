@@ -20,7 +20,7 @@ const RetainingWall: React.FC = () => {
         Stability Check Results
       </Typography>
       <StabilityResults />
-      <RetainingWallPlot imageUrl="https://i.imgur.com/cntX9e6.png" />
+      <RetainingWallPlot />
     </Container>
   );
 };

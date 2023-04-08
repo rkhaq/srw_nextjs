@@ -25,7 +25,8 @@ const NumberInput: React.FC<NumberInputProps> = ({
       onChange={(event) => onChange(event, inputKey)}
       variant="outlined"
       fullWidth
-      InputProps={{ inputProps: { min: 0, step: 'any' } }}
+      InputProps={{ inputProps: { min: 0, step: '0.1' } }}
+      onWheel={(event) => event.preventDefault()}
     />
   </Box>
 );

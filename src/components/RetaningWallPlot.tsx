@@ -1,20 +1,27 @@
+/* eslint-disable @next/next/no-img-element */
 import { Box } from '@mui/material';
-import Image from 'next/image';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'store/index';
+import { fetchRetainingWallImage } from 'store/slices/stabilityResultSlice';
 
-interface RetainingWallPlotProps {
-  imageUrl: string;
-}
+export const RetainingWallPlot: React.FC = () => {
+  const { plot_cache_key, results, base64ImageData } = useSelector(
+    (state: RootState) => state.stabilityResult
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
-export const RetainingWallPlot: React.FC<RetainingWallPlotProps> = ({
-  imageUrl,
-}) => {
+  React.useEffect(() => {
+    if (plot_cache_key) {
+      dispatch(fetchRetainingWallImage(plot_cache_key));
+    }
+  }, [plot_cache_key, dispatch]);
+
   return (
     <Box marginTop={4} marginBottom={4}>
-      <Image
-        src={imageUrl}
-        alt="Retaining Wall Plot"
-        width={600}
-        height={400}
+      <img
+        src={`data:image/png;base64,${base64ImageData}`}
+        alt="Retaining Wall"
       />
     </Box>
   );

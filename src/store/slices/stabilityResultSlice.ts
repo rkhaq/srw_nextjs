@@ -17,11 +17,13 @@ export interface StabilityResults {
 interface ResultInterface {
   plot_cache_key: string | null;
   results: StabilityResults | null; // Add this property
+  base64ImageData: string | null;
 }
 
 const initialState: ResultInterface = {
   plot_cache_key: null,
   results: null,
+  base64ImageData: null, // Add this property
 };
 
 const stabilityResultSlice = createSlice({
@@ -36,6 +38,10 @@ const stabilityResultSlice = createSlice({
     builder.addCase(updateStabilityResults.fulfilled, (state, action) => {
       state.plot_cache_key = action.payload.plote_cache_key;
       state.results = action.payload.stability_results;
+    });
+    // Add the new case for fetchRetainingWallImage
+    builder.addCase(fetchRetainingWallImage.fulfilled, (state, action) => {
+      state.base64ImageData = action.payload;
     });
   },
 });
@@ -69,6 +75,34 @@ export const updateStabilityResults = createAsyncThunk(
   async (parameters: RetainingWallInterface, { dispatch, getState }) => {
     const stabilityResults = await fetchStabilityResults(parameters);
     return stabilityResults;
+  }
+);
+
+export const fetchRetainingWallImage = createAsyncThunk(
+  'results/fetchRetainingWallImage',
+  async (cacheString: string, { dispatch, getState }) => {
+    const API_END_POINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
+    const response = await fetch(
+      `${API_END_POINT}/retaining_wall_image/${cacheString}/`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch retaining wall image');
+    }
+    console.log(response);
+
+    // Return the base64 image data from the API response
+    const results = await response.json();
+    const base64ImageData = await results.image_data;
+
+    return base64ImageData;
   }
 );
 

@@ -28,9 +28,10 @@ const InputParameters: React.FC = () => {
     inputKey: keyof RetainingWallInterface
   ) => {
     const { value } = event.target;
-    dispatch(updateParameters({ inputKey, value: parseFloat(value) }));
-    callApiAndUpdateResults(wallState);
-    console.log(wallState);
+    const newValue = parseFloat(value);
+    const updatedWallState = { ...wallState, [inputKey]: newValue };
+    dispatch(updateParameters({ inputKey, value: newValue }));
+    callApiAndUpdateResults(updatedWallState);
   };
 
   const inputLabels = [

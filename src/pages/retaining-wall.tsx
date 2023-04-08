@@ -4,6 +4,8 @@ import InputParameters from 'components/InputParameters';
 import StabilityResults from 'components/StabilityResults';
 import { RetainingWallPlot } from 'components/RetaningWallPlot';
 
+import { updateParameters } from '../store/slices/retainingWallSlice';
+
 const RetainingWall: React.FC = () => {
   return (
     <Container maxWidth="md" sx={{ mt: 10 }}>
@@ -17,10 +19,7 @@ const RetainingWall: React.FC = () => {
       <Typography variant="h5" component="h2" gutterBottom>
         Stability Check Results
       </Typography>
-      <StabilityResults
-        overturningSafetyFactor={2.0}
-        slidingSafetyFactor={1.5}
-      />
+      <StabilityResults />
       <RetainingWallPlot imageUrl="https://i.imgur.com/cntX9e6.png" />
     </Container>
   );
